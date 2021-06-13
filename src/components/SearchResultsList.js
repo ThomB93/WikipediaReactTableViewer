@@ -18,7 +18,7 @@ const SearchResultsList = ({ searchResults, columnsToDisplay }) => {
       <thead>
         <tr>
           <th>Title</th>
-          <th>Snippet</th>
+          {columnsToDisplay.includes("Snippet") && <th>Snippet</th>}
           {columnsToDisplay.includes("WordCount") && <th>Word Count</th>}
         </tr>
       </thead>

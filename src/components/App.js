@@ -7,8 +7,12 @@ class App extends React.Component {
   state = {
     searchResults: [],
     wordCountToggleClass: "ui toggle button active",
+    snippetToggleClass: "ui toggle button active",
     columnsDislayed: ["Title", "Snippet", "WordCount"],
   };
+  componentDidMount() {
+    this.onTermSubmit("Cat");
+  }
   onTermSubmit = async (term) => {
     const response = await wikipedia.get("", {
       params: {
@@ -18,19 +22,40 @@ class App extends React.Component {
     //console.log(response);
     this.setState({ searchResults: response.data.query.search });
   };
-  onWordCountToggle = () => {
-    if (this.state.wordCountToggleClass === "ui toggle button active") {
-      this.setState((prevState, props) => ({
-        wordCountToggleClass: "ui toggle button",
-        columnsDislayed: prevState.columnsDislayed.filter(
-          (column) => column !== "WordCount"
-        ),
-      }));
-    } else {
-      this.setState((prevState, props) => ({
-        wordCountToggleClass: "ui toggle button active",
-        columnsDislayed: prevState.columnsDislayed.concat("WordCount"),
-      }));
+  onColumnToggle = (columnName) => {
+    switch (columnName) {
+      case "WordCount":
+        if (this.state.wordCountToggleClass === "ui toggle button active") {
+          this.setState((prevState) => ({
+            wordCountToggleClass: "ui toggle button",
+            columnsDislayed: prevState.columnsDislayed.filter(
+              (column) => column !== "WordCount"
+            ),
+          }));
+        } else {
+          this.setState((prevState) => ({
+            wordCountToggleClass: "ui toggle button active",
+            columnsDislayed: prevState.columnsDislayed.concat("WordCount"),
+          }));
+        }
+        break;
+      case "Snippet":
+        if (this.state.snippetToggleClass === "ui toggle button active") {
+          this.setState((prevState) => ({
+            snippetToggleClass: "ui toggle button",
+            columnsDislayed: prevState.columnsDislayed.filter(
+              (column) => column !== "Snippet"
+            ),
+          }));
+        } else {
+          this.setState((prevState) => ({
+            snippetToggleClass: "ui toggle button active",
+            columnsDislayed: prevState.columnsDislayed.concat("Snippet"),
+          }));
+        }
+        break;
+      default:
+        break;
     }
   };
   render() {
@@ -57,9 +82,16 @@ class App extends React.Component {
               <button
                 className={this.state.wordCountToggleClass}
                 style={{ marginTop: 10 }}
-                onClick={this.onWordCountToggle}
+                onClick={() => this.onColumnToggle("WordCount")}
               >
                 Show Word Count
+              </button>
+              <button
+                className={this.state.snippetToggleClass}
+                style={{ marginTop: 10 }}
+                onClick={() => this.onColumnToggle("Snippet")}
+              >
+                Show Snippet
               </button>
             </div>
           </div>

@@ -9,10 +9,12 @@ const SearchResult = ({ searchResult, columnsToDisplay }) => {
           {searchResult.title}
         </a>
       </td>
-      <td
-        data-label="Snippet"
-        dangerouslySetInnerHTML={{ __html: snippet }}
-      ></td>
+      {columnsToDisplay.includes("Snippet") && (
+        <td
+          data-label="Snippet"
+          dangerouslySetInnerHTML={{ __html: snippet }}
+        ></td>
+      )}
       {columnsToDisplay.includes("WordCount") && (
         <td data-label="Word Count">{searchResult.wordcount}</td>
       )}
